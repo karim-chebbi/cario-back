@@ -18,8 +18,13 @@ const carSchema = new Schema({
     price: Number,
     fuel: String,
     description: String,
-    image: String
-},
+    image: String,
+    
+    addedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
+} ,
     { timestamps: true }
     ,
     { collection: 'cars' }

@@ -7,9 +7,13 @@ exports.test = (req, res) => {
 
 exports.addCar = async (req, res) => {
     try {
-        const newCar = req.body
+        const newCar = req.body;
 
-        const savedCar = new Car(newCar)
+        const savedCar = new Car({
+          ...newCar,
+          addedBy: req.user._id, // Add the current user's ID directly
+        });
+
 
         await savedCar.save()
 
@@ -82,3 +86,14 @@ exports.editCar = async (req, res) => {
         res.status(500).send(error);
     }
 }
+
+
+exports.getMyCars = async (req, res) => {
+  try {
+    const foundMyCars = await Car.find({addedBy: req.user._id});
+
+    res.status(200).send({ msg: "All cars: ", foundMyCars });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
